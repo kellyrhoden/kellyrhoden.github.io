@@ -6,5 +6,14 @@ Hello, and welcome to my portfolio! Here, I aim to showcase my passion for extra
 ## Table of Contents
 * [About](https://github.com/kellyrhoden/kellyrhoden.github.io?tab=readme-ov-file#about)
 * [Projects](https://github.com/kellyrhoden/kellyrhoden.github.io?tab=readme-ov-file#projects)
+* [Education](https://github.com/kellyrhoden/kellyrhoden.github.io?tab=readme-ov-file#education)
+* [Contact](https://github.com/kellyrhoden/kellyrhoden.github.io?tab=readme-ov-file#contact)
 
 ## Projects
+
+## Education
+* University of South Carolina Upstate: Master of Science, Informatics
+* Clemson University: Bachelor of Science, Health Science
+
+## Contact
+* [LinkedIn](https://www.linkedin.com/in/kellyrhoden/)

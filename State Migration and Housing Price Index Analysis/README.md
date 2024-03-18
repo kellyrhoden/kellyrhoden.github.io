@@ -72,3 +72,10 @@ The annual data for all migrations from SC should be negatively correlated with 
 There has been a greater difference over the past 10 years in the number of migrations to SC than there has been in the number of people migrating from SC. In terms of their effect on the SC population, the negative correlation between total migrations from SC and total migrations to SC indicates that as there is an increase in the population from the number of people moving to SC, there is a relatively smaller decrease in the population due to the number of people moving from SC (Figure 1). The number of people migrating to SC exceeds the number of people migrating from SC during this period, with the differences ranging from 28,000 to 80,000 more people migrating to SC than from SC each year. 
 
 There has generally been an increase over the past 10 years in the number of migrations to SC as well as the SC HPI (Figure 2). The number of people leaving SC has increased over the period at a slower rate than the number of people migrating to SC. The positive correlation between the northern migration to SC and the SC HPI indicates that the increasing northern migration to SC is correlated to an increase in the SC HPI, however, there is a stronger positive correlation between the non-northern migration to SC and the SC HPI. This indicates that an increase in total migration to SC is strongly correlated to an increase in the SC HPI, rather than correlating to northern migrations alone. While northern migrations do have a strong correlation to the HPI, there may be additional factors affecting the relationship between northern migration to SC and the SC housing price index, including migration from other states to SC. It is reasonable to assume that northern migrations to SC may be a factor in the increasing SC HPI.
+
+**Figure 1.**
+![Figure1](https://github.com/kellyrhoden/kellyrhoden.github.io/blob/main/State%20Migration%20and%20Housing%20Price%20Index%20Analysis/figure1.png)
+
+
+**Figure 2.**
+![Figure2] (https://github.com/kellyrhoden/kellyrhoden.github.io/blob/main/State%20Migration%20and%20Housing%20Price%20Index%20Analysis/figure2.png)

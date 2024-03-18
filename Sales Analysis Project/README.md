@@ -1,7 +1,7 @@
 # Sales Analysis Project
 ### Project Status: ***In Progress***
 * Tools: Excel, SQL, Tableau
-* Data
+* Data cleaning, data exploration, data analysis, and data visualization
 
 ## Data Cleaning
 **Tool: Excel**

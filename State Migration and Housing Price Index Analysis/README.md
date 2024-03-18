@@ -9,7 +9,7 @@ South Carolina is among the states with the fastest-growing populations, and a l
 ## Data Wrangling & Cleaning
 **Tool: Excel**
 
-* **Final Table:**
+* [Final Table](https://github.com/kellyrhoden/kellyrhoden.github.io/blob/main/State%20Migration%20and%20Housing%20Price%20Index%20Analysis/testdata.csv)
 
 *Data Sources*
 * [CDC State-to-State Migration Flows, 2012 -2019, 2021-2022](https://www.census.gov/data/tables/time-series/demo/geographic-mobility/state-to-state-migration.html)
@@ -51,7 +51,7 @@ The final combined table has 10 rows of data with the following columns:
 ## Data Analysis
 **Tools: SQL, Python**
 
-**Code:**
+* [Code](https://github.com/kellyrhoden/kellyrhoden.github.io/blob/main/State%20Migration%20and%20Housing%20Price%20Index%20Analysis/testdata.py)
 
 *Plan*
 

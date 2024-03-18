@@ -97,5 +97,9 @@ Customer Analysis:
 * Is there any relationship between sales and discounts offered?
 * What is the distribution of order statuses?
 
+## Data Analysis
+*Coming Soon*
+## Data Visualization
+*Comming Soon*
 ## Data Source
 https://www.kaggle.com/datasets/kyanyoga/sample-sales-data

@@ -78,4 +78,4 @@ There has generally been an increase over the past 10 years in the number of mig
 
 
 **Figure 2.**
-![Figure2] (https://github.com/kellyrhoden/kellyrhoden.github.io/blob/main/State%20Migration%20and%20Housing%20Price%20Index%20Analysis/figure2.png)
+![Figure2](https://github.com/kellyrhoden/kellyrhoden.github.io/blob/main/State%20Migration%20and%20Housing%20Price%20Index%20Analysis/figure2.png)

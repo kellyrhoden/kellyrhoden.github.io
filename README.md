@@ -10,7 +10,11 @@ Hello, and welcome to my portfolio! Here, I aim to showcase my passion for extra
 * [Contact](https://github.com/kellyrhoden/kellyrhoden.github.io?tab=readme-ov-file#contact)
 
 ## Projects
-
+### Sales Analysis Project
+#### Project Status: ***In Progress***
+* [Code](https://github.com/kellyrhoden/kellyrhoden.github.io/blob/main/Sales%20Analysis%20Project/data%20exploration.sql) (created in BigQuery)
+* Tools: Excel, SQL, BigQuery, Tableau
+* Data cleaning, data exploration, data analysis, and data visualization
 
 ## Resources
 I am a very hands-on, visual learner, so I'm always looking for new resources and tools online. Here are some of the resources I frequently use to reference and enhance my skills.

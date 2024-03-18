@@ -66,7 +66,7 @@ The annual data for all migrations from SC should be negatively correlated with 
 * The correlation coefficient for total migrations to SC and the SC HPI, which resulted in 0.94; this is a positive coefficient, indicating as one increases, the other increases. 
 * The correlation coefficient between migrations to SC and migrations from SC was -0.56; this is a negative coefficient, indicating that as one increases, the other decreases.
 
-## Results
+## Results & Data Visualization
 
 
 There has been a greater difference over the past 10 years in the number of migrations to SC than there has been in the number of people migrating from SC. In terms of their effect on the SC population, the negative correlation between total migrations from SC and total migrations to SC indicates that as there is an increase in the population from the number of people moving to SC, there is a relatively smaller decrease in the population due to the number of people moving from SC (Figure 1). The number of people migrating to SC exceeds the number of people migrating from SC during this period, with the differences ranging from 28,000 to 80,000 more people migrating to SC than from SC each year. 

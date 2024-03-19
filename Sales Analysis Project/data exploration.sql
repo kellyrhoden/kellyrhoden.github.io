@@ -1,29 +1,33 @@
-## GLOBAL NUMBERS
-# dataset date range
-SELECT MIN(ORDERDATE) AS OLDESTORDER, MAX(ORDERDATE) AS NEWESTORDER
+-- GLOBAL NUMBERS
+-- dataset date range
+SELECT MIN(ORDERDATE) AS OLDEST_ORDER, MAX(ORDERDATE) AS NEWEST_ORDER
 FROM Sales_Tables.TimeData;
 
-# total number of orders
-SELECT DISTINCT ORDERNUMBER
+-- total number of orders
+SELECT COUNT(DISTINCT ORDERNUMBER) AS TOTAL_ORDERS
 FROM Sales_Tables.ProductData;
 
-# total number of unique customers
-SELECT COUNT(DISTINCT CUSTOMERNAME) AS UNIQUECUSTOMERS
+-- total number of unique customers
+SELECT COUNT(DISTINCT CUSTOMERNAME) AS UNIQUE_CUSTOMERS
 FROM Sales_Tables.CustomerData;
 
-# total sales revenue
-SELECT ROUND(SUM(SALES),2) TOTALSALES
+-- total sales revenue
+SELECT ROUND(SUM(SALES),2) TOTAL_SALES_REVENUE
 FROM Sales_Tables.OrderSize;
 
-# average number of products sold per order
-SELECT ROUND(COUNT(ORDERNUMBER)/COUNT(DISTINCT ORDERNUMBER)) ORDERPRODUCTSAVG
-FROM Sales_Tables.ProductData;
+-- average number of products sold per order
+SELECT ROUND(AVG(products_per_order), 2) AS AVERAGE_PRODUCTS_PER_ORDER
+FROM (
+    SELECT ORDERNUMBER, COUNT(*) AS products_per_order
+    FROM Sales_Tables.ProductData
+    GROUP BY ORDERNUMBER
+) AS ProductCount;
 
-# average order value
+-- average order value
 SELECT ROUND(AVG(Sales),2) AS ORDERSALESAVG
 FROM Sales_Tables.OrderSize;
 
-# sales revenue per order
+-- sales revenue per order
 SELECT DISTINCT(ORDERNUMBER), 
   ROUND(SUM(SUM(SALES)) OVER (PARTITION BY ORDERNUMBER),2) AS TOTALSALES
 FROM Sales_Tables.OrderSize

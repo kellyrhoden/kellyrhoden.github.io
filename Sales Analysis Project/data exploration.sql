@@ -1,213 +1,275 @@
+/* Created for initial exploration of the dataset using BigQuery. Organized into the following sections: 
+Global Numbers, Sales Over Time, Sales By Product, Sales By Location/Customer, Pricing Analysis */
+
 -- GLOBAL NUMBERS
--- dataset date range
+-- Dataset date range
 SELECT MIN(ORDERDATE) AS OLDEST_ORDER, MAX(ORDERDATE) AS NEWEST_ORDER
 FROM Sales_Tables.TimeData;
 
--- total number of orders
+-- Total number of orders
 SELECT COUNT(DISTINCT ORDERNUMBER) AS TOTAL_ORDERS
 FROM Sales_Tables.ProductData;
 
--- total number of unique customers
+-- Total number of unique customers
 SELECT COUNT(DISTINCT CUSTOMERNAME) AS UNIQUE_CUSTOMERS
 FROM Sales_Tables.CustomerData;
 
--- total sales revenue
-SELECT ROUND(SUM(SALES),2) TOTAL_SALES_REVENUE
+-- Total number of products sold
+SELECT SUM(QUANTITYORDERED) AS TOTAL_QUANTITY_ORDERED
 FROM Sales_Tables.OrderSize;
 
--- average number of products sold per order
-SELECT ROUND(AVG(products_per_order), 2) AS AVERAGE_PRODUCTS_PER_ORDER
-FROM (
-    SELECT ORDERNUMBER, COUNT(*) AS products_per_order
-    FROM Sales_Tables.ProductData
-    GROUP BY ORDERNUMBER
-) AS ProductCount;
-
--- average order value
-SELECT ROUND(AVG(Sales),2) AS ORDERSALESAVG
-FROM Sales_Tables.OrderSize;
-
--- sales revenue per order
-SELECT DISTINCT(ORDERNUMBER), 
-  ROUND(SUM(SUM(SALES)) OVER (PARTITION BY ORDERNUMBER),2) AS TOTALSALES
+-- Total sales revenue
+SELECT ROUND(SUM(SALES), 2) AS TOTAL_SALES_REVENUE
 FROM Sales_Tables.OrderSize
 JOIN Sales_Tables.ProductData
-ON OrderSize.UNIQUEID=ProductData.UNIQUEID
+	ON OrderSize.UNIQUEID=ProductData.UNIQUEID;
+
+-- Average number of products sold per order
+SELECT ROUND(AVG(PRODUCTS_PER_ORDER), 2) AS AVG_PRODUCTS_PER_ORDER
+FROM (
+  SELECT ORDERNUMBER, COUNT(*) AS PRODUCTS_PER_ORDER
+  FROM Sales_Tables.ProductData
+  GROUP BY ORDERNUMBER
+) AS PRODUCT_COUNT;
+
+-- Average order value
+SELECT ROUND(AVG(Sales), 2) AS AVG_ORDER_VALUE
+FROM Sales_Tables.OrderSize;
+
+-- Sales revenue per order
+SELECT ORDERNUMBER, ROUND(SUM(SALES), 2) AS TOTAL_SALES_REVENUE
+FROM Sales_Tables.OrderSize
+JOIN Sales_Tables.ProductData
+  ON OrderSize.UNIQUEID=ProductData.UNIQUEID
 GROUP BY ORDERNUMBER;
 
-# number of orders by order status
-SELECT DISTINCT STATUS, COUNT(STATUS) OVER (PARTITION BY STATUS) AS ORDERS
-FROM Sales_Tables.OrderStatus;
+-- Number of orders by order status
+SELECT STATUS, COUNT(DISTINCT ORDERNUMBER) AS ORDER_COUNT
+FROM Sales_Tables.OrderStatus
+JOIN Sales_Tables.ProductData
+  ON OrderStatus.UNIQUEID = ProductData.UNIQUEID
+GROUP BY STATUS;
 
-
-
-
-## SALES OVER TIME
-# sales per year
-SELECT DISTINCT(YEAR_ID), 
-  ROUND(SUM(SUM(SALES)) OVER (PARTITION BY YEAR_ID),2) AS ANNUALSALES
+-- SALES OVER TIME
+-- Sales per year
+SELECT YEAR_ID, ROUND(SUM(SALES), 2) AS ANNUAL_SALES
 FROM Sales_Tables.TimeData
 JOIN Sales_Tables.OrderSize
-ON TimeData.UNIQUEID=OrderSize.UNIQUEID
+	ON OrderSize.UNIQUEID=TimeData.UNIQUEID
 GROUP BY YEAR_ID;
 
-# sales per quarter
-SELECT DISTINCT(QTR_ID), 
-  ROUND(SUM(SUM(SALES)) OVER (PARTITION BY QTR_ID),2) AS QUARTERLYSALES
+-- Sales per quarter
+SELECT QTR_ID, ROUND(SUM(SALES), 2) AS QUARTERLY_SALES
 FROM Sales_Tables.TimeData
 JOIN Sales_Tables.OrderSize
-ON TimeData.UNIQUEID=OrderSize.UNIQUEID
+  ON TimeData.UNIQUEID = OrderSize.UNIQUEID
 GROUP BY QTR_ID
 ORDER BY QTR_ID;
 
-# sales per month
-SELECT DISTINCT(MONTH), ROUND(SUM(SUM(SALES)) OVER (PARTITION BY MONTH),2) AS MONTHLYSALES
+-- Sales per month
+SELECT MONTH, ROUND(SUM(SALES), 2) AS MONTHLY_SALES
 FROM Sales_Tables.TimeData
 JOIN Sales_Tables.OrderSize
-ON TimeData.UNIQUEID=OrderSize.UNIQUEID
+  ON TimeData.UNIQUEID = OrderSize.UNIQUEID
 GROUP BY MONTH
-ORDER BY MONTHLYSALES DESC;
+ORDER BY MONTHLY_SALES DESC;
 
-# sales per day of the week
-WITH Weekdays AS (
-  SELECT DISTINCT FORMAT_DATE('%A',DATE(ORDERDATE)) AS DAY, TimeData.UNIQUEID
-  FROM Sales_Tables.TimeData
-  JOIN Sales_Tables.OrderSize
-  ON TimeData.UNIQUEID=OrderSize.UNIQUEID
-)
-SELECT DAY, ROUND(SUM(SUM(SALES)) OVER (PARTITION BY Weekdays.DAY),2) AS DAILYSALES
-  FROM Weekdays
-  JOIN Sales_Tables.TimeData
-  ON Weekdays.UNIQUEID=TimeData.UNIQUEID
-  JOIN Sales_Tables.OrderSize
-  ON Weekdays.UNIQUEID=OrderSize.UNIQUEID
-  GROUP BY Weekdays.DAY;
+-- Sales per day of the week
+SELECT FORMAT_DATE('%A', DATE(ORDERDATE)) AS DAY_OF_WEEK, ROUND(SUM(SALES), 2) AS DAILY_SALES
+FROM Sales_Tables.TimeData
+JOIN Sales_Tables.OrderSize
+  ON TimeData.UNIQUEID = OrderSize.UNIQUEID
+GROUP BY DAY_OF_WEEK;
 
+-- Looking at the average quantity ordered, minimum sales value, and maximum sales value per deal size category
+SELECT DEALSIZE,
+  ROUND(AVG(QUANTITYORDERED)) AS AVG_QUANTITY,
+  MIN(SALES) AS MIN_SALES,
+  MAX(SALES) AS MAX_SALES
+FROM Sales_Tables.OrderSize
+GROUP BY DEALSIZE;
 
-
-
-## SALES BY PRODUCT
-# total sales revenue by product line
-SELECT PRODUCTLINE, ROUND(SUM(SALES),2) AS TOTALSALES
+-- SALES BY PRODUCT
+-- Total sales revenue by product line
+SELECT PRODUCTLINE, ROUND(SUM(SALES), 2) AS TOTAL_SALES_REVENUE
 FROM Sales_Tables.ProductData
 JOIN Sales_Tables.OrderSize
-ON ProductData.UNIQUEID=OrderSize.UNIQUEID
+  ON ProductData.UNIQUEID = OrderSize.UNIQUEID
 GROUP BY PRODUCTLINE;
 
-# total number of products sold by product code
-SELECT DISTINCT PRODUCTCODE, SUM(QUANTITYORDERED) OVER (PARTITION BY PRODUCTCODE) AS TOTALQUANTITY
+-- Total number of products sold by product code
+SELECT PRODUCTCODE, SUM(QUANTITYORDERED) AS TOTAL_QUANTITY_SOLD
 FROM Sales_Tables.ProductData
 JOIN Sales_Tables.OrderSize
-ON ProductData.UNIQUEID=OrderSize.UNIQUEID;
+	ON ProductData.UNIQUEID=OrderSize.UNIQUEID
+GROUP BY PRODUCTCODE;
 
-# total number of products sold by product line
-SELECT DISTINCT PRODUCTLINE, SUM(QUANTITYORDERED) OVER (PARTITION BY PRODUCTLINE) AS TOTALQUANTITY
+-- Total number of products sold by product line
+SELECT PRODUCTLINE, SUM(QUANTITYORDERED) AS TOTAL_QUANTITY_SOLD
 FROM Sales_Tables.ProductData
 JOIN Sales_Tables.OrderSize
-ON ProductData.UNIQUEID=OrderSize.UNIQUEID;
+	ON ProductData.UNIQUEID=OrderSize.UNIQUEID
+GROUP BY PRODUCTLINE;
 
-# spread of products across all orders by product code
-SELECT DISTINCT PRODUCTCODE, COUNT(QUANTITYORDERED) OVER (PARTITION BY PRODUCTCODE) AS TOTALORDERS
+-- Spread of products across all orders by product line
+SELECT PRODUCTLINE, COUNT(DISTINCT ORDERNUMBER) AS NUMBER_OF_ORDERS
 FROM Sales_Tables.ProductData
-JOIN Sales_Tables.OrderSize
-ON ProductData.UNIQUEID=OrderSize.UNIQUEID;
+GROUP BY PRODUCTLINE;
 
-# spread of products across all orders by product line
-SELECT DISTINCT PRODUCTLINE, COUNT(QUANTITYORDERED) OVER (PARTITION BY PRODUCTLINE) AS TOTALORDERS
-FROM Sales_Tables.ProductData
-JOIN Sales_Tables.OrderSize
-ON ProductData.UNIQUEID=OrderSize.UNIQUEID;
+-- Deal size by product line
+SELECT PRODUCTLINE, DEALSIZE, COUNT(DEALSIZE) AS NUMBER_OF_DEALS
+FROM Sales_Tables.OrderSize
+JOIN Sales_Tables.ProductData
+  ON OrderSize.UNIQUEID = OrderSize.UNIQUEID
+GROUP BY PRODUCTLINE, DEALSIZE;
 
-# summary table of the number of products, the order quantity, and the total sales revenue of all orders 
-SELECT DISTINCT ORDERNUMBER, 
-  COUNT(PRODUCTCODE) OVER (PARTITION BY ORDERNUMBER) AS PRODUCTCOUNT, 
-  SUM(QUANTITYORDERED) OVER (PARTITION BY ORDERNUMBER) AS QUANTITYCOUNT,
-  ROUND(SUM(SALES) OVER (PARTITION BY ORDERNUMBER),2) AS TOTALSALES,
-  STATUS
+-- Summary table of the number of products, the order quantity, and the total sales revenue of all orders
+SELECT ORDERNUMBER, COUNT(PRODUCTCODE) AS PRODUCT_COUNT, SUM(QUANTITYORDERED) AS QUANTITY_COUNT,
+  ROUND(SUM(SALES), 2) AS TOTAL_SALES_REVENUE, STATUS
 FROM Sales_Tables.ProductData
 JOIN Sales_Tables.OrderSize
-  ON ProductData.UNIQUEID=OrderSize.UNIQUEID
+  ON ProductData.UNIQUEID = OrderSize.UNIQUEID
 JOIN Sales_Tables.OrderStatus
-  ON ProductData.UNIQUEID=OrderStatus.UNIQUEID;
+  ON ProductData.UNIQUEID = OrderStatus.UNIQUEID
+GROUP BY ORDERNUMBER, STATUS;
 
-
-
-
-## SALES BY COUNTRY
-# average order value by country
-SELECT Country, ROUND(AVG(Sales),2) AS AVGSALES
+-- SALES BY LOCATION/CUSTOMER
+-- Average order value by country
+SELECT Country, ROUND(AVG(Sales), 2) AS AVG_ORDER_VALUE
 FROM Sales_Tables.OrderSize
-LEFT JOIN Sales_Tables.LocationData
-ON OrderSize.UNIQUEID=LocationData.UNIQUEID
+JOIN Sales_Tables.LocationData
+  ON OrderSize.UNIQUEID = LocationData.UNIQUEID
 GROUP BY Country
-ORDER BY AVGSALES DESC;
+ORDER BY AVG_ORDER_VALUE DESC;
 
-# average number of sales by country
-SELECT Country, ROUND(AVG(Sales),2) AS AVGSALES
+-- Total sales by country
+SELECT Country, ROUND(SUM(SALES), 2) AS TOTAL_SALES
 FROM Sales_Tables.OrderSize
-LEFT JOIN Sales_Tables.LocationData
-ON OrderSize.UNIQUEID=LocationData.UNIQUEID
+JOIN Sales_Tables.LocationData
+  ON OrderSize.UNIQUEID = LocationData.UNIQUEID
 GROUP BY Country
-ORDER BY AVGSALES DESC;
+ORDER BY TOTAL_SALES DESC;
 
+-- Number of orders by country
+SELECT Country, COUNT(DISTINCT ORDERNUMBER) AS NUMBER_OF_ORDERS
+FROM Sales_Tables.ProductData
+JOIN Sales_Tables.LocationData
+  ON ProductData.UNIQUEID = LocationData.UNIQUEID
+GROUP BY Country
+ORDER BY NUMBER_OF_ORDERS DESC;
 
+-- Number of products sold by country
+SELECT Country, SUM(QUANTITYORDERED) AS QUANTITY_OF_PRODUCTS
+FROM Sales_Tables.OrderSize
+JOIN Sales_Tables.LocationData
+  ON OrderSize.UNIQUEID = LocationData.UNIQUEID
+GROUP BY Country
+ORDER BY QUANTITY_OF_PRODUCTS DESC;
 
+-- Number of customers by territory
+SELECT TERRITORY, COUNT(DISTINCT CUSTOMERNAME) AS CUSTOMERS
+FROM Sales_Tables.LocationData
+JOIN Sales_Tables.CustomerData
+  ON LocationData.UNIQUEID = CustomerData.UNIQUEID
+GROUP BY TERRITORY;
 
-## PRICING ANALYSIS
-# MSRP per product code
+-- Number of customers by country
+SELECT COUNTRY, COUNT(DISTINCT CUSTOMERNAME) AS CUSTOMERS
+FROM Sales_Tables.LocationData
+JOIN Sales_Tables.CustomerData
+  ON LocationData.UNIQUEID = CustomerData.UNIQUEID
+GROUP BY COUNTRY;
+
+-- Number of customers by U.S. state
+SELECT STATE, COUNT(DISTINCT CUSTOMERNAME) AS CUSTOMERS
+FROM Sales_Tables.LocationData
+JOIN Sales_Tables.CustomerData
+  ON LocationData.UNIQUEID = CustomerData.UNIQUEID
+WHERE COUNTRY = 'USA'
+GROUP BY STATE;
+
+-- Looking at purchasing dates of top two customers
+WITH CUSTOMERORDERS AS (
+    SELECT CUSTOMERNAME, ORDERDATE,
+      COUNT(DISTINCT ORDERNUMBER) OVER (PARTITION BY CUSTOMERNAME) AS ORDERCOUNT
+    FROM Sales_Tables.CustomerData
+    JOIN Sales_Tables.ProductData
+      ON CustomerData.UNIQUEID = ProductData.UNIQUEID
+    JOIN Sales_Tables.TimeData
+      ON CustomerData.UNIQUEID = TimeData.UNIQUEID
+)
+SELECT DISTINCT CUSTOMERNAME, ORDERDATE
+FROM CUSTOMERORDERS
+WHERE ORDERCOUNT > 10
+ORDER BY CUSTOMERNAME, ORDERDATE;
+
+-- Number of orders and total sales by customer
+SELECT DISTINCT(CUSTOMERNAME), 
+  COUNT(DISTINCT ORDERNUMBER) AS NUMBER_OF_ORDERS, 
+  ROUND(SUM(SALES), 2) AS TOTAL_SALES
+FROM Sales_Tables.CustomerData
+JOIN Sales_Tables.ProductData
+  ON CustomerData.UNIQUEID = ProductData.UNIQUEID
+JOIN Sales_Tables.OrderSize
+  ON CustomerData.UNIQUEID = OrderSize.UNIQUEID
+GROUP BY CUSTOMERNAME
+ORDER BY TOTAL_SALES DESC;
+
+-- PRICING ANALYSIS
+-- MSRP per product code
 SELECT DISTINCT PRODUCTCODE, MSRP
 FROM Sales_Tables.ProductData;
 
-# MSRP per product line
-# may pull a lower number of rows than MSRP per product code because some product lines have products with the same MSRP
+-- MSRP per product line
 SELECT DISTINCT PRODUCTLINE, MSRP
 FROM Sales_Tables.ProductData;
 
-
-# price per product code
-# may pull a lower number of rows than price per product line because some product codes have products with the same price
+-- Price per product code
 SELECT DISTINCT PRODUCTCODE, PRICEEACH
 FROM Sales_Tables.ProductData
 JOIN Sales_Tables.OrderSize
-ON ProductData.UNIQUEID=OrderSize.UNIQUEID;
+  ON ProductData.UNIQUEID = OrderSize.UNIQUEID;
 
-# price per product line
+-- Price per product line
 SELECT DISTINCT PRODUCTLINE, PRICEEACH
 FROM Sales_Tables.ProductData
 JOIN Sales_Tables.OrderSize
-ON ProductData.UNIQUEID=OrderSize.UNIQUEID;
+  ON ProductData.UNIQUEID = OrderSize.UNIQUEID;
 
-# comparing estimated revenue based on price and quantity or MSRP and quantity to actual sales revenue
-# there is a discrepancy between estimated sales revenue and actual sales revenue only for products priced at $100, which may indicate an additional fee or tax
-SELECT DISTINCT PRODUCTCODE, QUANTITYORDERED, PRICEEACH, (PRICEEACH - MSRP) AS PRICEMSRPDIFF,
-  (QUANTITYORDERED * PRICEEACH) AS SALESEST,
-  SALES, 
-  ROUND((SALES - (QUANTITYORDERED * PRICEEACH)),2) AS SALESDIFF,
-  MSRP,
-  (QUANTITYORDERED * MSRP) AS MSRPSALESEST,
-  ROUND((SALES - (QUANTITYORDERED * MSRP)),2) AS MSRPSALESDIFF
+-- Total quantity ordered per each price point
+SELECT PRICEEACH, SUM(QUANTITYORDERED) AS TOTAL_QUANTITY_ORDERED
+FROM Sales_Tables.OrderSize
+GROUP BY PRICEEACH;
+
+-- Comparing estimated revenue based on price and quantity or MSRP and quantity to actual sales revenue
+SELECT PRODUCTCODE, QUANTITYORDERED, PRICEEACH, 
+  (PRICEEACH - MSRP) AS PRICE_MSRP_DIFF,
+  (QUANTITYORDERED * PRICEEACH) AS SALES_EST, SALES,
+  ROUND((SALES - (QUANTITYORDERED * PRICEEACH)), 2) AS SALES_DIFF,
+  MSRP, (QUANTITYORDERED * MSRP) AS MSRP_SALES_EST,
+  ROUND((SALES - (QUANTITYORDERED * MSRP)), 2) AS MSRP_SALES_DIFF
 FROM Sales_Tables.ProductData
 JOIN Sales_Tables.OrderSize
-ON ProductData.UNIQUEID=OrderSize.UNIQUEID
+  ON ProductData.UNIQUEID = OrderSize.UNIQUEID
 ORDER BY SALES DESC;
 
-# comparing estimated sales revenue to actual sales revenue for highest priced products
-SELECT DISTINCT PRODUCTCODE, PRICEEACH, QUANTITYORDERED, SALES,
-  (QUANTITYORDERED * PRICEEACH) AS SALESEST, 
-  ROUND((SALES - (QUANTITYORDERED * PRICEEACH)),2) AS SALESDIFF
+-- Comparing estimated sales revenue to actual sales revenue for highest priced products
+SELECT PRODUCTCODE, PRICEEACH, QUANTITYORDERED, SALES,
+  (QUANTITYORDERED * PRICEEACH) AS SALES_EST,
+  ROUND((SALES - (QUANTITYORDERED * PRICEEACH)), 2) AS SALES_DIFF
 FROM Sales_Tables.ProductData
 JOIN Sales_Tables.OrderSize
-ON ProductData.UNIQUEID=OrderSize.UNIQUEID
+  ON ProductData.UNIQUEID = OrderSize.UNIQUEID
 WHERE PRICEEACH = 100;
 
-# total sales revenue less total estimated sales revenue
+-- Total sales revenue less total estimated sales revenue
 SELECT ROUND(SUM(SALES) - SUM(QUANTITYORDERED * PRICEEACH))
 FROM Sales_Tables.ProductData
 JOIN Sales_Tables.OrderSize
-ON ProductData.UNIQUEID=OrderSize.UNIQUEID;
+  ON ProductData.UNIQUEID = OrderSize.UNIQUEID;
 
-# total sales revenue less total MSRP estimated sales revenue
+-- Total sales revenue less total MSRP estimated sales revenue
 SELECT ROUND(SUM(SALES) - SUM(QUANTITYORDERED * MSRP))
 FROM Sales_Tables.ProductData
 JOIN Sales_Tables.OrderSize
-ON ProductData.UNIQUEID=OrderSize.UNIQUEID;
+  ON ProductData.UNIQUEID = OrderSize.UNIQUEID;

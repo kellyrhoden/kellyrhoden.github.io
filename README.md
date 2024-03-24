@@ -12,7 +12,7 @@ Hello, and welcome to my portfolio! Here, I aim to showcase my passion for extra
 ## Projects
 ### Sales Analysis Project
 #### Project Status: ***In Progress***
-* [Code](https://github.com/kellyrhoden/kellyrhoden.github.io/blob/main/Sales%20Analysis%20Project/data%20exploration.sql) (created in BigQuery)
+* [SQL Code](https://github.com/kellyrhoden/kellyrhoden.github.io/blob/main/Sales%20Analysis%20Project/Data%20Exploration.sql) (created for BigQuery)
 * Tools: Excel, SQL, BigQuery, Tableau
 * Data cleaning, data exploration, data analysis, and data visualization
 

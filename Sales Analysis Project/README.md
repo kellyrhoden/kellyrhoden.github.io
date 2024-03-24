@@ -4,13 +4,11 @@
 * Data cleaning, data exploration, data analysis, and data visualization
 
 ### Table of Contents
-* Data Cleaning
-* Data Exploration
-  * Description of Columns
-  * Tables Created
-  * Exploratory Questions to Guide SQL Queries
-* Data Analysis
-* Data Visualization
+* [Data Cleaning](https://github.com/kellyrhoden/kellyrhoden.github.io/blob/main/Sales%20Analysis%20Project/README.md#data-cleaning)
+* [Data Exploration](https://github.com/kellyrhoden/kellyrhoden.github.io/blob/main/Sales%20Analysis%20Project/README.md#data-exploration)
+* [Data Analysis](https://github.com/kellyrhoden/kellyrhoden.github.io/blob/main/Sales%20Analysis%20Project/README.md#data-analysis)
+* [Data Visualization](https://github.com/kellyrhoden/kellyrhoden.github.io/blob/main/Sales%20Analysis%20Project/README.md#data-visualization)
+* [Data Source](https://github.com/kellyrhoden/kellyrhoden.github.io/blob/main/Sales%20Analysis%20Project/README.md#data-source)
 
 ## Data Cleaning
 **Tool: Excel**
@@ -21,7 +19,7 @@
 * Created new column, MONTH, using TEXT function based on MONTHID column
 
 ## Data Exploration
-**Tool: SQL, BigQuery**
+**Tool: SQL, BigQuery, Excel**
 
 *[Description of Columns](https://github.com/kellyrhoden/kellyrhoden.github.io/blob/main/Sales%20Analysis%20Project/Description%20of%20Columns.md)*
 
@@ -137,6 +135,6 @@ Part 1: Answering exploratory questions created to guide SQL queries.
 | What US states have sales? | CA, MA, NY, PA, CT, NH, NV, NJ |
 
 ## Data Visualization
-*Comming Soon*
+*Coming Soon*
 ## Data Source
 https://www.kaggle.com/datasets/kyanyoga/sample-sales-data

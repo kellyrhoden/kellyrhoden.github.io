@@ -117,10 +117,10 @@ FROM Sales_Tables.ProductData
 GROUP BY PRODUCTLINE;
 
 -- Deal size by product line
-SELECT PRODUCTLINE, DEALSIZE, COUNT(DEALSIZE) AS NUMBER_OF_DEALS
+SELECT PRODUCTLINE, DEALSIZE, COUNT(OrderSize.UNIQUEID) AS NUMBER_OF_DEALS
 FROM Sales_Tables.OrderSize
 JOIN Sales_Tables.ProductData
-  ON OrderSize.UNIQUEID = OrderSize.UNIQUEID
+  ON OrderSize.UNIQUEID = ProductData.UNIQUEID
 GROUP BY PRODUCTLINE, DEALSIZE;
 
 -- Summary table of the number of products, the order quantity, and the total sales revenue of all orders

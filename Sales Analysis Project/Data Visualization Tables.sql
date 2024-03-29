@@ -81,18 +81,6 @@ JOIN Sales_Tables.OrderSize
 GROUP BY PRODUCTLINE;
 
 -- TABLE 6
--- Number of deals by product line and deal size
-WITH Deals AS (
-  SELECT PRODUCTLINE, DEALSIZE, COUNT(OrderSize.UNIQUEID) AS NUMBER_OF_DEALS
-  FROM Sales_Tables.OrderSize
-  JOIN Sales_Tables.ProductData
-    ON OrderSize.UNIQUEID = ProductData.UNIQUEID
-  GROUP BY PRODUCTLINE, DEALSIZE)
-SELECT * FROM Deals
-PIVOT (
-  SUM(NUMBER_OF_DEALS) FOR DEALSIZE IN ('Small', 'Medium','Large'));
-
--- TABLE 7
 -- Total sales, average order value, number of orders, and total products sold by country
 SELECT Country, 
   ROUND(AVG(Sales), 2) AS AVG_ORDER_VALUE,
@@ -108,6 +96,23 @@ JOIN Sales_Tables.ProductData
 JOIN Sales_Tables.CustomerData
   ON OrderSize.uNIQUEID = CustomerData.UNIQUEID
 GROUP BY Country;
+
+
+-- TABLE 7
+-- Sales by country and order date
+SELECT ORDERDATE, COUNTRY, 
+  ROUND(SUM(SALES), 2) AS TOTAL_SALES,
+  SUM(QUANTITYORDERED) AS QUANTITY_OF_PRODUCTS,
+FROM Sales_Tables.OrderSize
+JOIN Sales_Tables.LocationData
+  ON OrderSize.UNIQUEID = LocationData.UNIQUEID
+JOIN Sales_Tables.ProductData
+  ON OrderSize.UNIQUEID = ProductData.UNIQUEID
+JOIN Sales_Tables.CustomerData
+  ON OrderSize.uNIQUEID = CustomerData.UNIQUEID
+JOIN Sales_Tables.TimeData
+  ON OrderSize.UNIQUEID = TimeData.UNIQUEID
+GROUP BY ORDERDATE, Country;
 
 -- TABLE 8
 -- Looking at purchasing dates of all customers
@@ -128,17 +133,3 @@ WITH CUSTOMERORDERS AS (
 SELECT DISTINCT COUNTRY, ORDERNUMBER, CUSTOMERNAME, ORDERDATE, TOTAL_SALES
 FROM CUSTOMERORDERS
 ORDER BY COUNTRY, ORDERNUMBER, CUSTOMERNAME, ORDERDATE;
-
--- TABLE 9
--- Product line sales by order date
-SELECT ORDERDATE, PRODUCTLINE, 
-  COUNT(ProductData.UNIQUEID) AS ORDERS,
-  SUM(QUANTITYORDERED) AS QUANTITY,
-  ROUND(SUM(SALES), 2) AS TOTALSALES
-FROM Sales_Tables.ProductData
-JOIN Sales_Tables.TimeData
-  ON ProductData.UNIQUEID = TimeData.UNIQUEID
-JOIN Sales_Tables.OrderSize
-  ON ProductData.UNIQUEID = OrderSize.UNIQUEID
-GROUP BY ORDERDATE, PRODUCTLINE
-ORDER BY ORDERDATE;

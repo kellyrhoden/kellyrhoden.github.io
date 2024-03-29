@@ -123,6 +123,17 @@ JOIN Sales_Tables.ProductData
   ON OrderSize.UNIQUEID = ProductData.UNIQUEID
 GROUP BY PRODUCTLINE, DEALSIZE;
 
+-- Number of deals by product line and deal size
+WITH Deals AS (
+  SELECT PRODUCTLINE, DEALSIZE, COUNT(OrderSize.UNIQUEID) AS NUMBER_OF_DEALS
+  FROM Sales_Tables.OrderSize
+  JOIN Sales_Tables.ProductData
+    ON OrderSize.UNIQUEID = ProductData.UNIQUEID
+  GROUP BY PRODUCTLINE, DEALSIZE)
+SELECT * FROM Deals
+PIVOT (
+  SUM(NUMBER_OF_DEALS) FOR DEALSIZE IN ('Small', 'Medium','Large'));
+
 -- Summary table of the number of products, the order quantity, and the total sales revenue of all orders
 SELECT ORDERNUMBER, COUNT(PRODUCTCODE) AS PRODUCT_COUNT, SUM(QUANTITYORDERED) AS QUANTITY_COUNT,
   ROUND(SUM(SALES), 2) AS TOTAL_SALES_REVENUE, STATUS
@@ -214,6 +225,25 @@ JOIN Sales_Tables.OrderSize
   ON CustomerData.UNIQUEID = OrderSize.UNIQUEID
 GROUP BY CUSTOMERNAME
 ORDER BY TOTAL_SALES DESC;
+
+-- Looking at purchasing dates of all customers
+WITH CUSTOMERORDERS AS (
+    SELECT COUNTRY, CUSTOMERNAME, ORDERDATE, ORDERNUMBER,
+      COUNT(DISTINCT ORDERNUMBER) OVER (PARTITION BY CUSTOMERNAME) AS ORDERCOUNT,
+      ROUND(SUM(SALES), 2) AS TOTAL_SALES
+    FROM Sales_Tables.CustomerData
+    JOIN Sales_Tables.ProductData
+      ON CustomerData.UNIQUEID = ProductData.UNIQUEID
+    JOIN Sales_Tables.TimeData
+      ON CustomerData.UNIQUEID = TimeData.UNIQUEID
+    JOIN Sales_Tables.OrderSize
+      ON CustomerData.UNIQUEID = OrderSize.UNIQUEID
+    JOIN Sales_Tables.LocationData
+      ON CustomerData.UNIQUEID = LocationData.UNIQUEID
+    GROUP BY COUNTRY, CUSTOMERNAME, ORDERDATE, ORDERNUMBER)
+SELECT DISTINCT COUNTRY, ORDERNUMBER, CUSTOMERNAME, ORDERDATE, TOTAL_SALES
+FROM CUSTOMERORDERS
+ORDER BY COUNTRY, ORDERNUMBER, CUSTOMERNAME, ORDERDATE;
 
 -- PRICING ANALYSIS
 -- MSRP per product code

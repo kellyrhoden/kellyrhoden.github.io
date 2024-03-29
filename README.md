@@ -11,7 +11,7 @@ Hello, and welcome to my portfolio! Here, I aim to showcase my passion for extra
 
 ## Projects
 ### Sales Analysis Project
-#### Project Status: ***In Progress***
+#### Project Status: Complete
 * [SQL Code for Tableau Tables](https://github.com/kellyrhoden/kellyrhoden.github.io/blob/main/Sales%20Analysis%20Project/Data%20Visualization%20Tables.sql) (created for BigQuery)
 * [Tableau Data Visualization](https://public.tableau.com/app/profile/kelly.rhoden1559/viz/SalesAnalysis_17113372139830/Dashboard1)
 * Tools: Excel, SQL, BigQuery, Tableau

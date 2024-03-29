@@ -1,5 +1,5 @@
 # Sales Analysis Project
-### Project Status: ***In Progress***
+### Project Status: Complete
 * Tools: Excel, SQL, BigQuery, Tableau
 * Data cleaning, data exploration, data analysis, and data visualization
 
@@ -135,6 +135,7 @@ Part 1: Answering exploratory questions created to guide SQL queries.
 | What US states have sales? | CA, MA, NY, PA, CT, NH, NV, NJ |
 
 ## Data Visualization
-*Coming Soon*
+* [Tableau Data Visualization](https://public.tableau.com/app/profile/kelly.rhoden1559/viz/SalesAnalysis_17113372139830/Dashboard1)
+
 ## Data Source
 https://www.kaggle.com/datasets/kyanyoga/sample-sales-data

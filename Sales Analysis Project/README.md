@@ -104,6 +104,7 @@ Part 1: Answering exploratory questions created to guide SQL queries.
 | What price point has had the greatest quantities ordered? | 45,963 products have been ordered at the $100 price point |
 
 | Product Analysis | |
+| --- | --- |
 | Which product line generates the highest revenue? | Classic Cars: $3,919,615.66|
 | What is the distribution of sales revenue by product line? | Classic Cars: $3,919,615.66 |
 | | Vintage Cars: $1,903,150.84 |
@@ -127,9 +128,9 @@ Part 1: Answering exploratory questions created to guide SQL queries.
 | | Least: Ireland and Switzerland both have 2 orders
 | What countries have ordered the greatest and least number of products? | Greatest: USA has ordered 35,659 products |
 | | Least: Ireland has orderest 490 products |
-| Are there any outliers in customer purchase behavior? | Euro Shopping Channel has made the most orders (26 orders) with sales totalling $912,294.11. |
-| | Mini Gifts Distributors Ltd has made the second most orders (17 orders) with sales totalling $654,858.06. |
-| | The remaining 90 customers have made 1-5 orders with sales totalling between $9,129.35 and $200,995.41. |
+| Are there any outliers in customer purchase behavior? | Euro Shopping Channel has made the most orders (26 orders) with sales totaling $912,294.11. |
+| | Mini Gifts Distributors Ltd has made the second most orders (17 orders) with sales totaling $654,858.06. |
+| | The remaining 90 customers have made 1-5 orders with sales totaling between $9,129.35 and $200,995.41. |
 | Where are most customers from by territory and location? | Territory: 44 from EMEA, 38 from NA |
 | | Country: 35 from USA, 12 from France |
 | What US states have sales? | CA, MA, NY, PA, CT, NH, NV, NJ |

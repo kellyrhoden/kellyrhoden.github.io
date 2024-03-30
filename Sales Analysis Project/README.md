@@ -1,5 +1,5 @@
 # Sales Analysis Project
-### Project Status: Complete
+### Project Status: *Complete*
 * Tools: Excel, SQL, BigQuery, Tableau
 * Data cleaning, data exploration, data analysis, and data visualization
 

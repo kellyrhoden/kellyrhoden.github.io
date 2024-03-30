@@ -49,7 +49,7 @@ The final combined table has 10 rows of data with the following columns:
 * NSA_HPI
 
 ## Data Analysis
-**Tools: SQL, Python**
+**Tools: Python**
 
 * [Code](https://github.com/kellyrhoden/kellyrhoden.github.io/blob/main/State%20Migration%20and%20Housing%20Price%20Index%20Analysis/testdata.py)
 

@@ -11,11 +11,18 @@ Hello, and welcome to my portfolio! Here, I aim to showcase my passion for extra
 
 ## Projects
 ### Sales Analysis Project
-#### Project Status: Complete
+#### Project Status: *Complete*
 * [SQL Code for Tableau Tables](https://github.com/kellyrhoden/kellyrhoden.github.io/blob/main/Sales%20Analysis%20Project/Data%20Visualization%20Tables.sql) (created for BigQuery)
 * [Tableau Data Visualization](https://public.tableau.com/app/profile/kelly.rhoden1559/viz/SalesAnalysis_17113372139830/Dashboard1)
 * Tools: Excel, SQL, BigQuery, Tableau
 * Data cleaning, data exploration, data analysis, and data visualization
+
+### State Migration and Housing Price Index Analysis
+#### Project Status: ***Complete***
+*[Python Code](https://github.com/kellyrhoden/kellyrhoden.github.io/blob/main/State%20Migration%20and%20Housing%20Price%20Index%20Analysis/testdata.py)
+* Tools: Excel, Python (pandas, scipy)
+* Data wrangling, data cleaning, data analysis, data visualization
+
 
 ## Resources
 I am a very hands-on, visual learner, so I'm always looking for new resources and tools online. Here are some of the resources I frequently use to reference and enhance my skills.

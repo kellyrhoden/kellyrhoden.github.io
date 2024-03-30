@@ -19,7 +19,7 @@ Hello, and welcome to my portfolio! Here, I aim to showcase my passion for extra
 
 ### State Migration and Housing Price Index Analysis
 #### Project Status: ***Complete***
-*[Python Code](https://github.com/kellyrhoden/kellyrhoden.github.io/blob/main/State%20Migration%20and%20Housing%20Price%20Index%20Analysis/testdata.py)
+* [Python Code](https://github.com/kellyrhoden/kellyrhoden.github.io/blob/main/State%20Migration%20and%20Housing%20Price%20Index%20Analysis/testdata.py)
 * Tools: Excel, Python (pandas, scipy)
 * Data wrangling, data cleaning, data analysis, data visualization
 
